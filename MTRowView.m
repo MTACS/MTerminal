@@ -11,7 +11,7 @@ static hspan_t *hspan_retain(CFAllocatorRef allocator, hspan_t *span) {
   	return span;
 }
 static void hspan_release(CFAllocatorRef allocator, hspan_t *span) {
-  	if (atomic_fetch_add(&span->retain_count, 1) == 0) {
+  	if (atomic_fetch_sub(&span->retain_count, 1) == 0) {
 		free(span);
 	}
 }

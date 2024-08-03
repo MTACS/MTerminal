@@ -62,7 +62,7 @@ static screen_line_t *screen_line_retain(CFAllocatorRef allocator, screen_line_t
     return line;
 }
 static void screen_line_release(CFAllocatorRef allocator, screen_line_t *line) {
-    if (atomic_fetch_add(&line->retain_count, 1) == 0) {
+    if (atomic_fetch_sub(&line->retain_count, 1) == 0) {
         free(line);
     }
 }
