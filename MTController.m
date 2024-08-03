@@ -837,6 +837,7 @@ static NSString *getTitle(VT100 *terminal) {
         AudioServicesPlaySystemSound(bellSoundID);
     }
     UITableView *tableView = (UITableView *)self.view;
+    BOOL wasAtTheBottom = tableView.contentOffset.y >= (tableView.contentSize.height - tableView.frame.size.height);
     [UIView setAnimationsEnabled:NO];
     if (changes) {
         [tableView beginUpdates];
@@ -867,8 +868,10 @@ static NSString *getTitle(VT100 *terminal) {
     } else {
         [tableView reloadSections:screenSection withRowAnimation:UITableViewRowAnimationNone];
     }
+    if (wasAtTheBottom)
+        [tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:terminal.numberOfLines - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+
     [UIView setAnimationsEnabled:YES];
-    [tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:terminal.numberOfLines - 1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
 }
 - (UIView *)inputAccessoryView {
     UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, 50)];
