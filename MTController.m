@@ -825,6 +825,23 @@ static NSString *getTitle(VT100 *terminal) {
 
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
     [tableView addGestureRecognizer:tapGesture];
+
+    UILongPressGestureRecognizer *longTap = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleHoldGesture:)];
+    [longTap setMinimumPressDuration:0.5];
+    [tableView addGestureRecognizer:longTap];
+    [tapGesture requireGestureRecognizerToFail:longTap];
+    [longTap release];
+
+    UISwipeGestureRecognizer *leftSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeGesture:)];
+    leftSwipe.direction = UISwipeGestureRecognizerDirectionLeft;
+    [tableView addGestureRecognizer:leftSwipe];
+    [leftSwipe release];
+
+    UISwipeGestureRecognizer *rightSwipe = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeGesture:)];
+    rightSwipe.direction = UISwipeGestureRecognizerDirectionRight;
+    [tableView addGestureRecognizer:rightSwipe];
+    [rightSwipe release];
+
     [tapGesture release];
     [self.view = tableView release];
     [self handleOpenURL:nil];
