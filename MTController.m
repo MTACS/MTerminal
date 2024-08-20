@@ -909,7 +909,9 @@ static NSString *getTitle(VT100 *terminal) {
 	[activeTerminal sendKey:kVT100KeyTab];
 }
 - (void)paste:(UIBarButtonItem *)sender {
-	[activeTerminal sendString:(CFStringRef)[UIPasteboard generalPasteboard].string];
+    id str = [UIPasteboard generalPasteboard].string;
+    if (str != nil)
+	    [activeTerminal sendString:(CFStringRef)str];
 }
 - (void)toggleCtrlLock:(UIBarButtonItem *)sender {
 	ctrlLock = !ctrlLock;
